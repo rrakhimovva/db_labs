@@ -32,7 +32,7 @@
 - Посчет выручки аптеки за заданный период
 </h3>
 </p>
-# <img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Лабораторная работа №1
+<img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Лабораторная работа №1
 
 
 <p aligh="justify>
