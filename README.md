@@ -74,5 +74,7 @@ ER-модель д.б. представлена в виде ER-диаграмм�
 </h3>
 </p3>
 
+[SQL-код создания таблиц](https://github.com/rrakhimovva/db_labs/blob/main/pharmacy-database/SQLQuery1.sql)
+
 #### Диаграмма базы данных
 ![image](/lab1/diagram_bd.jpg)
