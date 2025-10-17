@@ -80,3 +80,5 @@ ER-модель д.б. представлена в виде ER-диаграмм�
 
 [Часть 1](https://github.com/rrakhimovva/db_labs/blob/main/lab3/Рахимова_ПМИ32_часть1.docx)
 
+[Часть 2](https://github.com/rrakhimovva/db_labs/blob/main/lab3/Рахимова_ПМИ32_часть2.docx)
+
