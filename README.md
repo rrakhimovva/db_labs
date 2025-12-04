@@ -1,4 +1,4 @@
-<h1 name="content" align="center"><a href=""><img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/></a> MSSQL</h1>
+<h1 name="content" align="center"><a href=""></a> MSSQL</h1>
 
 <p align="center">
   <a href="#lab1"><img alt="lab1" src="https://img.shields.io/badge/Lab1-ffb6c1"></a> 
@@ -12,7 +12,7 @@
   <a href="#lab9"><img alt="lab9" src="https://img.shields.io/badge/Lab9-ffb8c9"></a> 
 </p>
 
-<img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Аптека (Вариант №15)
+Аптека (Вариант №15)
 <p aligh="justify>
 <h3>
   <a href="#client"></a>
