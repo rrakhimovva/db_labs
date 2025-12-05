@@ -1,4 +1,4 @@
-﻿-- Создаем узлы
+-- Создаем узлы
 CREATE TABLE ManufacturerNode (
     id INT NOT NULL PRIMARY KEY,
     [name] NVARCHAR(50) NOT NULL,
@@ -47,7 +47,9 @@ CREATE TABLE SellsMedication AS EDGE;
 
 CREATE TABLE MakesSale AS EDGE;
 
-CREATE TABLE IncludesInSale AS EDGE;
+CREATE TABLE IncludesInSale (
+    quantity INT NOT NULL
+) AS EDGE;
 
 -- Заполняем узлы информацией
 INSERT INTO ManufacturerNode (id, [name], email, [address])
@@ -111,14 +113,13 @@ FROM
     JOIN SalesNode sn ON s.id = sn.id;
 
 -- Продажа -> Включает в -> Партию лекарства
-INSERT INTO IncludesInSale ($from_id, $to_id)
+INSERT INTO IncludesInSale ($from_id, $to_id, quantity)
 SELECT 
     sn.$node_id,
-    mbn.$node_id
-FROM MedicineBatch_Sales mbs JOIN Sales s ON mbs.sales_id = s.id
+    mbn.$node_id,
+    mbs.quantity
+FROM MedicineBatch_Sales mbs
+    JOIN Sales s ON mbs.sales_id = s.id
     JOIN MedicineBatch mb ON mbs.medicine_batch_id = mb.id
     JOIN SalesNode sn ON s.id = sn.id
     JOIN MedicineBatchNode mbn ON mb.id = mbn.id;
-
-
-
