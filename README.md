@@ -144,7 +144,7 @@ ER-модель д.б. представлена в виде ER-диаграмм�
 
 [SQL-код создания и заполнения графовых таблиц](https://github.com/rrakhimovva/db_labs/blob/main/lab6/Create_graph_tables.sql)
 
-[Сравнение запросов](https://github.com/rrakhimovva/db_labs/blob/main/lab6/Сравнение_запросов.pdf)
+[Сравнение запросов](https://github.com/rrakhimovva/db_labs/blob/main/lab6/Сравнение_запросов%20(1).pdf)
 
 #### Схема узлов и ребер
 ![image](https://github.com/rrakhimovva/db_labs/blob/main/lab6/Схема%20ребер%20и%20узлов.png)
