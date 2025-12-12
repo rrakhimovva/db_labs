@@ -161,22 +161,22 @@ ER-модель д.б. представлена в виде ER-диаграмм�
 BEGIN TRANSACTION;
 
 -- Добавляем нового производителя
-INSERT INTO Manufacturer(id, [name], email, [address]) VALUES
-(12, 'Atrium', 'orders@aytr.ru', ' Краснодар, ул. им. Калинина, д. 58');
+INSERT INTO Manufacturer([name], email, [address]) VALUES
+('Atrium', 'orders@aytr.ru', ' Краснодар, ул. им. Калинина, д. 58');
 
 -- Создаем точку сохранения
 SAVE TRANSACTION savepoint1;
 
 -- Добавляем еще одного производителя
-INSERT INTO Manufacturer(id, [name], email, [address]) VALUES
-(13, 'ICDMC', 'orders@ICDMC.ru', ' Тула, пр-кт Красноармейский, д.1');
+INSERT INTO Manufacturer([name], email, [address]) VALUES
+('ICDMC', 'orders@ICDMC.ru', ' Тула, пр-кт Красноармейский, д.1');
 
 -- Откатываем транзакцию до точки сохранения
 ROLLBACK TRANSACTION savepoint1;
 
 -- Проверяем, что данные второго производителя были удалены после отката
 SELECT 'После отката:' AS Статус;
-SELECT * FROM Manufacturer WHERE id IN (12, 13);
+SELECT * FROM Manufacturer WHERE [name] IN ('Atrium', 'ICDMC');
 ```
 
 | id | name | email | address |
@@ -185,15 +185,15 @@ SELECT * FROM Manufacturer WHERE id IN (12, 13);
 
 ```
 -- Cнова добавляем второго производителя
-INSERT INTO Manufacturer(id, [name], email, [address]) VALUES
-(13,'ICDMC', 'orders@ICDMC.ru', ' Тула, пр-кт Красноармейский, д.1');
+INSERT INTO Manufacturer([name], email, [address]) VALUES
+('ICDMC', 'orders@ICDMC.ru', ' Тула, пр-кт Красноармейский, д.1');
 
 -- Фиксируем транзакцию
 COMMIT TRANSACTION;
 
 -- Проверяем, что данные обоих производителей были успешно зафиксированы
 SELECT 'После фиксации:' AS Статус;
-SELECT * FROM Manufacturer WHERE id IN (12, 13);
+SELECT * FROM Manufacturer WHERE [name] IN ('Atrium', 'ICDMC');
 ```
 | id | name | email | address |
 | :--- | :--- | :--- | :--- |
