@@ -173,3 +173,64 @@ INSERT INTO MedicineBatch_Sales (medicine_batch_id, sales_id, quantity) VALUES
 (8, 5, 2), 
 (9, 6, 1), 
 (10, 7, 3);
+
+-- Добавляем адрес и почту к существующей таблице
+ALTER TABLE Manufacturer ADD
+    email NVARCHAR(100),
+    [address] NVARCHAR(200)
+
+-- Обновляем существующих поставщиков с контактной информацией
+UPDATE Manufacturer SET 
+    email = 'orders@bayer.ru',
+    [address] = 'Москва, ул. Ленина, 25'
+WHERE id = 1;
+
+UPDATE Manufacturer SET 
+    email = 'supply@pfizer.com',
+    address = 'Санкт-Петербург, Невский пр-т, 100'
+WHERE id = 2;
+
+UPDATE Manufacturer SET 
+    email = 'pharma@novartis.ru',
+    address = 'Москва, Кутузовский пр-т, 15'
+WHERE id = 3;
+
+UPDATE Manufacturer SET 
+    email = 'distribution@roche.com',
+    address = 'Екатеринбург, ул. Мира, 50'
+WHERE id = 4;
+
+UPDATE Manufacturer SET 
+    email = 'orders@sanofi.ru',
+    address = 'Новосибирск, Красный пр-т, 75'
+WHERE id = 5;
+
+UPDATE Manufacturer SET 
+    email = 'info@gsk.ru',
+    address = 'Москва, ул. Тверская, 10'
+WHERE id = 6;
+
+UPDATE Manufacturer SET 
+    email = 'contact@astrazeneca.com',
+    address = 'Казань, ул. Баумана, 30'
+WHERE id = 7;
+
+UPDATE Manufacturer SET 
+    email = 'orders@jnj.ru',
+    address = 'Ростов-на-Дону, ул. Большая Садовая, 25'
+WHERE id = 8;
+
+UPDATE Manufacturer SET 
+    email = 'supply@merck.com',
+    address = 'Владивосток, ул. Светланская, 15'
+WHERE id = 9;
+
+UPDATE Manufacturer SET 
+    email = 'distribution@teva.ru',
+    address = 'Нижний Новгород, ул. Большая Покровская, 20'
+WHERE id = 10;
+
+UPDATE Manufacturer SET 
+    email = 'orders@pharmstd.ru',
+    address = 'Москва, ул. Вавилова, 27'
+WHERE id = 11;
