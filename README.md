@@ -11,7 +11,7 @@
   <a href="#lab8"><img alt="lab8" src="https://img.shields.io/badge/Lab8-d87093"></a>
 </p>
 
-Аптека (Вариант №15)
+Аптека (Вариант №11)
 <p aligh="justify>
 <h3>
   <a href="#client"></a>
