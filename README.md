@@ -175,7 +175,6 @@ INSERT INTO Manufacturer([name], email, [address]) VALUES
 ROLLBACK TRANSACTION savepoint1;
 
 -- Проверяем, что данные второго производителя были удалены после отката
-SELECT 'После отката:' AS Статус;
 SELECT * FROM Manufacturer WHERE [name] IN ('Atrium', 'ICDMC');
 ```
 
@@ -192,7 +191,6 @@ INSERT INTO Manufacturer([name], email, [address]) VALUES
 COMMIT TRANSACTION;
 
 -- Проверяем, что данные обоих производителей были успешно зафиксированы
-SELECT 'После фиксации:' AS Статус;
 SELECT * FROM Manufacturer WHERE [name] IN ('Atrium', 'ICDMC');
 ```
 | id | name | email | address |
@@ -203,3 +201,27 @@ SELECT * FROM Manufacturer WHERE [name] IN ('Atrium', 'ICDMC');
 
 Задание 2. Подготовить SQL-скрипты для выполнения проверок изолированности транзакций. Скрипты должны работать с одной из таблиц, созданных в лабораторной работе №2.
 
+### READ UNCOMMITTED
+
+```
+-- Устанавливаем в обоих сеансах уровень изоляции READ UNCOMMITTED
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+```
+
+```
+-- Грязное чтение
+#- В сессии 1: открыта транзакция с UPDATE, изменения не зафиксированы
+#- В сессии 2: выполнен SELECT к изменяемым данным
+#- Результат: сессия 2 увидела незафиксированные изменения из сессии 1, что является грязным чтением.
+-- Первое окно
+BEGIN TRANSACTION;
+UPDATE Manufacturer SET [name] = 'Dirty Read' WHERE id_client = 3;
+-- Второе окно
+SELECT * FROM Manufacturer WHERE id = 3;
+-- Первое окно
+ROLLBACK TRANSACTION;
+```
+
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 3 | Dirty Read | pharma@novartis.ru | Москва, Кутузовский пр-т, 15 |
