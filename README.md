@@ -209,6 +209,28 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 ```
 
 ```
+-- Потерянные изменения
+# В сессии 1: открыта транзакция с UPDATE 
+# В сессии 2: параллельно выполнен UPDATE того же поля у той же записи
+# Результат: изменения одной из транзакций перезаписываются другой,
+# что приводит к потере обновлений после фиксации (COMMIT).
+-- Первое окно
+BEGIN TRANSACTION;
+UPDATE Manufacturer SET [name] = 'First Transaction' WHERE id = 2;
+-- Второе окно
+BEGIN TRANSACTION;
+UPDATE Manufacturer SET [name] = 'Second Transaction' WHERE id = 2;
+COMMIT TRANSACTION;
+-- Первое окно 
+COMMIT TRANSACTION;
+```
+
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 2 | Second Transaction | supply@pfizer.com | Санкт-Петербург, Невский пр-т, 100 |
+
+```
+
 -- Грязное чтение
 # В сессии 1: открыта транзакция с UPDATE, изменения не зафиксированы
 # В сессии 2: выполнен SELECT к изменяемым данным
@@ -379,4 +401,3 @@ COMMIT TRANSACTION;
 | 11 | Фармстандарт | orders@pharmstd.ru | Москва, ул. Вавилова, 27 |
 | 12 | Atrium | orders@aytr.ru |  Краснодар, ул. им. Калинина, д. 58 |
 | 13 | ICDMC | orders@ICDMC.ru |  Тула, пр-кт Красноармейский, д.1 |
-
