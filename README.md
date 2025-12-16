@@ -215,7 +215,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 # Результат: сессия 2 увидела незафиксированные изменения из сессии 1, что является грязным чтением.
 -- Первое окно
 BEGIN TRANSACTION;
-UPDATE Manufacturer SET [name] = 'Dirty Read' WHERE id_client = 3;
+UPDATE Manufacturer SET [name] = 'Dirty Read' WHERE id = 3;
 -- Второе окно
 SELECT * FROM Manufacturer WHERE id = 3;
 -- Первое окно
@@ -225,3 +225,62 @@ ROLLBACK TRANSACTION;
 | id | name | email | address |
 | :--- | :--- | :--- | :--- |
 | 3 | Dirty Read | pharma@novartis.ru | Москва, Кутузовский пр-т, 15 |
+
+### READ COMMITTED
+
+```
+-- Устанавливаем в обоих сеансах уровень изоляции READ COMMITTED
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+```
+
+```
+-- Грязное чтение
+# Повторим предыдущий сценарий и увидим, что грязное чтение больше не происходит
+-- Первое окно
+BEGIN TRANSACTION;
+UPDATE Manufacturer SET [name] = 'Dirty Read' WHERE id = 3;
+-- Второе окно
+SELECT * FROM Manufacturer WHERE id = 3;
+-- Первое окно
+ROLLBACK TRANSACTION;
+```
+
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 3 | Novartis | pharma@novartis.ru | Москва, Кутузовский пр-т, 15 |
+
+```
+-- Неповторяющееся чтение
+# В сессии 1: открыта транзакция и выполнен SELECT из таблицы Manufacturer
+# В сессии 2: выполнен UPDATE тех же данных и зафиксирован
+# Результат: при повторном SELECT в сессии 1 увидим, что данные изменились в течение одной и той же транзакции, что является неповторяющимся чтением.
+-- Певрое окно
+BEGIN TRANSACTION;
+SELECT * FROM Manufacturer WHERE id = 4;
+-- Второе окно
+BEGIN TRANSACTION;
+UPDATE Manufacturer SET [name] = 'Check read' WHERE id = 4;
+COMMIT TRANSACTION;
+-- Первое окно
+SELECT * FROM Manufacturer WHERE id = 4;
+COMMIT TRANSACTION;
+```
+
+При первом SELECT:
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 4 | Roche | distribution@roche.com | Екатеринбург, ул. Мира, 50 |
+
+При втором SELECT:
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 4 | Check read | distribution@roche.com | Екатеринбург, ул. Мира, 50 |
+
+### REPEATABLE READ
+
+```
+-- Устанавливаем в обоих сеансах уровень изоляции REPEATABLE READ
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+```
+
+
