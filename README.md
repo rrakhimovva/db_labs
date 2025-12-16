@@ -332,10 +332,51 @@ COMMIT TRANSACTION;
 | id | name | email | address |
 | :--- | :--- | :--- | :--- |
 | 11 | Фармстандарт | orders@pharmstd.ru | Москва, ул. Вавилова, 27 |
+| 12 | Atrium | orders@aytr.ru |  Краснодар, ул. им. Калинина, д. 58 |
+| 13 | ICDMC | orders@ICDMC.ru |  Тула, пр-кт Красноармейский, д.1 |
+
+При втором SELECT:
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 11 | Фармстандарт | orders@pharmstd.ru | Москва, ул. Вавилова, 27 |
+| 12 | Atrium | orders@aytr.ru |  Краснодар, ул. им. Калинина, д. 58 |
+| 13 | ICDMC | orders@ICDMC.ru |  Тула, пр-кт Красноармейский, д.1 |
+| 14 | Phantom | 1234@mail.ru | Рыбинск, ул. Свободы, 45 |
+
+### SERIALIZABLE
+
+```
+-- Устанавливаем в обоих сеансах уровень изоляции SERIALIZABLE
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
+
+```
+-- Фантомное чтение
+# Повторим предыдущий сценарий и увидим, что фантомное чтение больше не происходит
+-- Первое окно
+BEGIN TRANSACTION;
+SELECT * FROM Manufacturer WHERE id > 10;
+-- Второе окно
+BEGIN TRANSACTION;
+INSERT INTO Manufacturer([name], email, [address]) VALUES
+('Phantom', '1234@mail.ru', ' Рыбинск, ул.Свободы,45 ');
+COMMIT TRANSACTION;
+-- Первое окно
+SELECT * FROM Manufacturer WHERE id > 10; 
+COMMIT TRANSACTION;
+```
 
 При первом SELECT:
 | id | name | email | address |
 | :--- | :--- | :--- | :--- |
 | 11 | Фармстандарт | orders@pharmstd.ru | Москва, ул. Вавилова, 27 |
-| 12 | Phantom | 1234@mail.ru | Рыбинск, ул. Свободы, 45 |
+| 12 | Atrium | orders@aytr.ru |  Краснодар, ул. им. Калинина, д. 58 |
+| 13 | ICDMC | orders@ICDMC.ru |  Тула, пр-кт Красноармейский, д.1 |
+
+При втором SELECT:
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 11 | Фармстандарт | orders@pharmstd.ru | Москва, ул. Вавилова, 27 |
+| 12 | Atrium | orders@aytr.ru |  Краснодар, ул. им. Калинина, д. 58 |
+| 13 | ICDMC | orders@ICDMC.ru |  Тула, пр-кт Красноармейский, д.1 |
 
