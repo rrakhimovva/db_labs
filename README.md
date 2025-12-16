@@ -253,7 +253,8 @@ ROLLBACK TRANSACTION;
 -- Неповторяющееся чтение
 # В сессии 1: открыта транзакция и выполнен SELECT из таблицы Manufacturer
 # В сессии 2: выполнен UPDATE тех же данных и зафиксирован
-# Результат: при повторном SELECT в сессии 1 увидим, что данные изменились в течение одной и той же транзакции, что является неповторяющимся чтением.
+# Результат: при повторном SELECT в сессии 1 увидим, что данные изменились в течение одной и той же транзакции,
+# что является неповторяющимся чтением.
 -- Певрое окно
 BEGIN TRANSACTION;
 SELECT * FROM Manufacturer WHERE id = 4;
@@ -283,4 +284,58 @@ COMMIT TRANSACTION;
 SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 ```
 
+```
+-- Неповторяющееся чтение
+# Повторим предыдущий сценарий и увидим, что неповторяющееся чтение больше не происходит
+-- Певрое окно
+BEGIN TRANSACTION;
+SELECT * FROM Manufacturer WHERE id = 4;
+-- Второе окно
+BEGIN TRANSACTION;
+UPDATE Manufacturer SET [name] = 'Check read' WHERE id = 4;
+COMMIT TRANSACTION;
+-- Первое окно
+SELECT * FROM Manufacturer WHERE id = 4;
+COMMIT TRANSACTION;
+```
+
+При первом SELECT:
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 4 | Roche | distribution@roche.com | Екатеринбург, ул. Мира, 50 |
+
+При втором SELECT:
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 4 | Roche | distribution@roche.com | Екатеринбург, ул. Мира, 50 |
+
+```
+-- Фантомное чтение
+# В сессии 1: открыта транзакция и выполнен SELECT 
+# В сессии 2: выполнен INSERT новой записи и зафиксирован
+# Результат: повторный SELECT в сессии 1 показывает новую запись,
+# появившуюся в рамках одной транзакции, что является фантомным чтением.
+-- Первое окно
+BEGIN TRANSACTION;
+SELECT * FROM Manufacturer WHERE id > 10;
+-- Второе окно
+BEGIN TRANSACTION;
+INSERT INTO Manufacturer([name], email, [address]) VALUES
+('Phantom', '1234@mail.ru', ' Рыбинск, ул.Свободы,45 ');
+COMMIT TRANSACTION;
+-- Первое окно
+SELECT * FROM Manufacturer WHERE id > 10; 
+COMMIT TRANSACTION;
+```
+
+При первом SELECT:
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 11 | Фармстандарт | orders@pharmstd.ru | Москва, ул. Вавилова, 27 |
+
+При первом SELECT:
+| id | name | email | address |
+| :--- | :--- | :--- | :--- |
+| 11 | Фармстандарт | orders@pharmstd.ru | Москва, ул. Вавилова, 27 |
+| 12 | Phantom | 1234@mail.ru | Рыбинск, ул. Свободы, 45 |
 
