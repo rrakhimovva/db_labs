@@ -411,5 +411,5 @@ COMMIT TRANSACTION;
 [Задание 1.](https://github.com/rrakhimovva/db_labs/blob/main/lab8/задание_1_MongoDB.pdf)
 Работа с коллекцией "Рестораны"
 
-Задание 2. 
+[Задание 2.](https://github.com/rrakhimovva/db_labs/blob/main/lab8/задание_2_MongoDB.pdf) 
 Работа с коллекцией "Погода"
